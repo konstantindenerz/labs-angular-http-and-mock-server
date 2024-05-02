@@ -1,0 +1,88 @@
+{
+  "name": "labs-angular-http-and-mock-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/labs-angular-http-and-mock-server/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/labs-angular-http-and-mock-server",
+        "index": "apps/labs-angular-http-and-mock-server/src/index.html",
+        "browser": "apps/labs-angular-http-and-mock-server/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/labs-angular-http-and-mock-server/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/labs-angular-http-and-mock-server/src/favicon.ico",
+          "apps/labs-angular-http-and-mock-server/src/assets"
+        ],
+        "styles": ["apps/labs-angular-http-and-mock-server/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "labs-angular-http-and-mock-server:build:production"
+        },
+        "development": {
+          "buildTarget": "labs-angular-http-and-mock-server:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "labs-angular-http-and-mock-server:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/labs-angular-http-and-mock-server/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "labs-angular-http-and-mock-server:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/labs-angular-http-and-mock-server/browser",
+        "spa": true
+      }
+    }
+  }
+}
