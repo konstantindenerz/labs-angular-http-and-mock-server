@@ -1,1 +1,3 @@
-<app-nx-welcome></app-nx-welcome> <router-outlet></router-outlet>
+rx: {{ user$ | async | json }} <br>
+<!--signal: {{ user() | json }} <br>-->
+<button (click)="create()">Create</button>
