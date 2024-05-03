@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Injectable, Injector, runInInjectionContext, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { CONFIG } from '../core/config/config.token';
 import { RETRY_COUNT } from '../core/http/retry-count';
 import { User } from './user.interface';
@@ -13,7 +13,13 @@ export class UserService {
   private readonly injector = inject(Injector);
 
   loadUserProfile(): Observable<User> {
-    return this.httpClient.get<User>(`${this.config.apiBaseUrl}/api/user2`, { context: new HttpContext().set(RETRY_COUNT, 1) });
+    return this.httpClient.get<User>(`${this.config.apiBaseUrl}/api/user2`, { context: new HttpContext().set(RETRY_COUNT, 1) }).pipe(
+      catchError((error) => {
+        console.log('✨', error);
+        return throwError(() => error);
+      }),
+      finalize(() => console.log('⚡️ completed'))
+    );
   }
 
   create(user: Partial<User>) {
